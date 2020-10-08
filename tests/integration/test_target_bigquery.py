@@ -18,7 +18,8 @@ except ImportError:
 METADATA_COLUMNS = [
     '_sdc_extracted_at',
     '_sdc_batched_at',
-    '_sdc_deleted_at'
+    '_sdc_deleted_at',
+    '_sdc_sequence'
 ]
 
 
@@ -358,7 +359,7 @@ class TestIntegration(unittest.TestCase):
         # Get loaded rows from tables
         bigquery = DbSync(self.config)
         target_schema = self.config.get('default_target_schema', '')
-        table_non_db_friendly_columns = query(bigquery, 
+        table_non_db_friendly_columns = query(bigquery,
             "SELECT * FROM {}.test_table_non_db_friendly_columns ORDER BY c_pk".format(target_schema))
 
         self.assertEqual(
@@ -417,7 +418,7 @@ class TestIntegration(unittest.TestCase):
         # Get loaded rows from tables
         bigquery = DbSync(self.config)
         target_schema = self.config.get('default_target_schema', '')
-        flattened_table = query(bigquery, 
+        flattened_table = query(bigquery,
             "SELECT * FROM {}.test_table_nested_schema ORDER BY c_pk".format(target_schema))
 
         # Should be flattened columns
